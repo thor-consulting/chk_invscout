@@ -20,7 +20,7 @@
 	mv -f /var/adm/invscout/microcode/catalog.mic /var/adm/invscout/microcode/catalog.mic.bak
 
 	/opt/freeware/bin/wget http://techsupport.services.ibm.com/server/mdownload/catalog.mic \
-		-O /var/adm/invscout/microcode/catalog.mic
+		-O /var/adm/invscout/microcode/catalog.mic 1>/dev/null
 
 	/usr/sbin/invscout 1>/var/adm/invscout/log/invscout-${TIMESTAMP}.out
 
