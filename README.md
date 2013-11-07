@@ -4,11 +4,18 @@ chk_invscout
 Perform automated check of AIX inventory scout procedure.
 
 
-== INSTALL ==
+== DOWNLOAD ==
 
-	clone chk_invscout from github:
+	using git: clone chk_invscout from github:
 
 	$ git clone git://github.com/STVIN/chk_invscout.git
+
+	using wget: download chk_invscout from github:
+
+	$ wget https://github.com/STVIN/chk_invscout/archive/master.zip
+
+
+== INSTALL ==
 
 	chdir to chk_invscout
 
