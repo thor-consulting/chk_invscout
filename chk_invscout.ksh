@@ -11,7 +11,7 @@
 
 	export HOSTNAME="`/usr/bin/hostname -s `"
 
-	export TODAY="`date '+%Y_%m_%d'`"
+	export TIMESTAMP="`date '+%Y_%m_%d-%H:%M:%S'`"
 
 	[ -d /var/adm/invscout/log ] || mkdir /var/adm/invscout/log
 
@@ -20,30 +20,30 @@
 	mv -f /var/adm/invscout/microcode/catalog.mic /var/adm/invscout/microcode/catalog.mic.bak
 
 	/opt/freeware/bin/wget http://techsupport.services.ibm.com/server/mdownload/catalog.mic \
-		-O /var/adm/invscout/microcode/catalog.mic 2>> /tmp/wget.err
+		-O /var/adm/invscout/microcode/catalog.mic
 
-	/usr/sbin/invscout 1>/var/adm/invscout/log/invscout-`date '+%Y_%m_%d-%H:%M:%S'`
+	/usr/sbin/invscout 1>/var/adm/invscout/log/invscout-${TIMESTAMP}.out
 
 	if [ -s /var/adm/invscout/${HOSTNAME}.mup ]
 	then
-		/usr/local/bin/mds_upload.pl > /var/adm/invscout/tmp/mds_${HOSTNAME}-${TODAY}.htm
+		/usr/local/bin/mds_upload.pl > /var/adm/invscout/tmp/mds_${HOSTNAME}-${TIMESTAMP}.htm
 
-		if /usr/bin/egrep -q "<font color='red'>" /var/adm/invscout/tmp/mds_${HOSTNAME}-${TODAY}.htm
+		if /usr/bin/egrep -q "<font color='red'>" /var/adm/invscout/tmp/mds_${HOSTNAME}-${TIMESTAMP}.htm
 		then
 			echo "" | \
 				# /opt/freeware/bin/mutt -e 'my_hdr Content-Type: text/html' -e 'my_hdr Content-Disposition: inline' -s "chk_invscout : ${HOSTNAME}" \
 				/opt/freeware/bin/mutt -s "chk_invscout : ${HOSTNAME}" \
-					-a /var/adm/invscout/tmp/mds_${HOSTNAME}-${TODAY}.htm root
+					-a /var/adm/invscout/tmp/mds_${HOSTNAME}-${TIMESTAMP}.htm root
 
 			break
 		fi
 
-		if /usr/bin/egrep -q "<font color=red>" /var/adm/invscout/tmp/mds_${HOSTNAME}-${TODAY}.htm
+		if /usr/bin/egrep -q "<font color=red>" /var/adm/invscout/tmp/mds_${HOSTNAME}-${TIMESTAMP}.htm
 		then
 			echo "" | \
 				# /opt/freeware/bin/mutt -e 'my_hdr Content-Type: text/html' -e 'my_hdr Content-Disposition: inline' -s "chk_invscout : ${HOSTNAME}" \
 				/opt/freeware/bin/mutt -s "chk_invscout : ${HOSTNAME}" \
-					-a /var/adm/invscout/tmp/mds_${HOSTNAME}-${TODAY}.htm root
+					-a /var/adm/invscout/tmp/mds_${HOSTNAME}-${TIMESTAMP}.htm root
 
 			break
 		fi
@@ -51,6 +51,8 @@
 		/usr/bin/mv -f /var/adm/invscout/${HOSTNAME}.mup /var/adm/invscout/${HOSTNAME}.mup.bak
 	else
 		print -u2 "chk_invscout: invscout failed to create .mup file"
+
+		print -u2 "chk_invscout: please check invscout log: /var/adm/invscout/log/invscout-${TIMESTAMP}.out"
 	fi
 
 ##
