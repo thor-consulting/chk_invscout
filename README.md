@@ -23,7 +23,7 @@ Perform automated check of AIX inventory scout procedure.
 
 	run chk_invscout.ksh as root:
 
-	$ sudo /usr/local/bin/chk_invscout.ksh
+	# /usr/local/bin/chk_invscout.ksh
 
 
 == NOTES ==
